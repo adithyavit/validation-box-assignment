@@ -1,28 +1,48 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
-</template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { styled } from "@egoist/vue-emotion";
+import TextBox from "./components/TextBox";
+import InputValidation from "./components/InputValidation";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
-</script>
+    TextBox,
+    InputValidation,
+  },
+  data() {
+    return {
+      validationType: null,
+    };
+  },
+  methods: {
+    getValidationType(type) {
+      this.validationType = type;
+    },
+  },
+  render() {
+    const WrapperDiv = styled("div")`
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    `;
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+    return (
+      <WrapperDiv>
+        {this.validationType === null ? (
+          <TextBox getValidationType={this.getValidationType} />
+        ) : (
+          <InputValidation
+            getValidationType={this.getValidationType}
+            validationType={this.validationType}
+            uniqueId="input-validator"
+            placeholder={this.validationType.toUpperCase()}
+          />
+        )}
+      </WrapperDiv>
+    );
+  },
+};
+</script>
